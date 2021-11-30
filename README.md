@@ -79,7 +79,7 @@ Refer to the [ESP32-C3 Hardware Reference](https://xespressif.com/projects/esp-i
 2. You can directly plug the ExpressLink board onto the Arduino board's headers.
 3. Once this is done, ensure that the ExpressLink board's switch is in OFF state.
 4. You may now connect the Arduino to your computer, and that will automatically power the board.
-5. You can use the Arduino sketch as shown in [Section 7](#7-using-espressifs-aws-iot-expresslink-with-the-arduino-sketch) to quickly get started.  
+5. You can use the Arduino sketch as shown in [Section 7](#7-using-expresslink-with-the-arduino-sketch) to quickly get started.  
 
 The pins of the ExpressLink board are mapped to the Arduino as follows:  
 
@@ -334,7 +334,7 @@ In order to upgrade the ExpressLink board to the latest available firmware, you 
 
 ## 8.1.1 Prerequisites
 
-1. Download the latest release for ExpressLink from the releases section.  
+1. Download the latest release for ExpressLink from the [releases section](https://github.com/espressif/esp-aws-expresslink-eval/releases).  
 Ensure that it has the following contents:  
 a) A metadata file indicating the signature hashing algorithm used (Example: SHA-256), the signature encryption algorithm used (Example: ECDSA)  
 b) The signature file, encoded using the base64 encoding format.   
