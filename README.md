@@ -1,4 +1,4 @@
-# Getting Started Guide for Espressif AWS IoT ExpressLink Evaluation Kit
+# Getting Started Guide for Espressif's AWS IoT ExpressLink Evaluation Kit
 
 # Table of Contents
 
@@ -6,10 +6,10 @@
 2. [Overview](#2-overview)
 3. [Hardware Description](#3-hardware-description)
 4. [Setup your AWS account and Permissions for IoT development](#4-setup-your-aws-account-and-permissions-for-iot-development)
-5. [Registering an Espressif AWS IoT ExpressLink to your development account](#5-registering-an-espressif-aws-iot-expresslink-to-your-development-account)
+5. [Registering ExpressLink to your development account](#5-registering-expresslink-to-your-development-account)
 6. [Connecting and Interacting with AWS cloud](#6-connecting-and-interacting-with-aws-cloud)
-7. [Using Espressif AWS IoT ExpressLink with the Arduino Sketch](#7-using-espressif-aws-iot-expresslink-with-the-arduino-sketch)
-8. [Upgrading the Espressif AWS IoT ExpressLink firmware](#8-upgrading-the-espressif-aws-iot-expresslink-firmware)
+7. [Using ExpressLink with the Arduino Sketch](#7-using-expresslink-with-the-arduino-sketch)
+8. [Upgrading ExpressLink firmware](#8-upgrading-expresslink-firmware)
 9. [Troubleshooting](#9-troubleshooting)
 
 # 1. Document Information
@@ -20,37 +20,37 @@
 
 # 2. Overview
 
-![Espressif AWS IoT ExpressLink Eval Board](_static/ESP-AWS-IoT-ExpressLink.png "Espressif AWS IoT ExpressLink Eval Kit")
+![Espressif's AWS IoT ExpressLink Eval board](_static/ESP-AWS-IoT-ExpressLink.png "Espressif's AWS IoT ExpressLink Eval Kit")
 
-The Espressif AWS IoT ExpressLink module is a connectivity module that connects via a serial interface (UART) and uses an abstracted Application Programming Interface (API) to connect any host application to AWS IoT Core and its services.
-In so doing, the Espressif AWS IoT ExpressLink module offloads complex and undifferentiated workload such as authentication, device management, connectivity, and messaging from the application (host) processor.
+Espressif's AWS IoT ExpressLink (Henceforth referred to as ExpressLink) module is a connectivity module that connects via a serial interface (UART) and uses an abstracted Application Programming Interface (API) to connect any host application to AWS IoT Core and its services.
+In so doing, the ExpressLink module offloads complex and undifferentiated workload such as authentication, device management, connectivity, and messaging from the application (host) processor.
 It enables a scalable migration for millions of embedded applications to cloud-connected applications and offers fast time to market.  
 More information on AWS IoT ExpressLink can be found [here](https://aws.amazon.com/iot-expresslink/).  
 The developer documentation can be found [here](https://docs.aws.amazon.com/iot-expresslink).  
-Examples for AWS IoT Expresslink can be found [here](https://github.com/aws/iot-expresslink).  
+Examples for AWS IoT ExpressLink can be found [here](https://github.com/aws/iot-expresslink).  
 
 # 3. Hardware Description
 
-The Espressif AWS IoT ExpressLink board has an Arduino shield form factor, so it can be plugged directly on top of the standard Arduino.
+Espressif's AWS IoT ExpressLink board (ESP32-C3-AWS-ExpressLink-DevKit) (Henceforth referred to as ExpressLink board) has an Arduino shield form factor, so it can be plugged directly on top of the standard Arduino.
 It can also be used with a Raspberry Pi or any other host.  
 It has the following connection pins that need to be made, for full functionality of the board:  
 
-| Espressif AWS IoT ExpressLink Pin | ESP32-C3 GPIO Pin | ESP32-C3-MINI-1 Module Pin |
-|-----------------------------------|-------------------|----------------------------|
-| TX                                | IO19              | 27                         |
-| RX                                | IO18              | 26                         |
-| EVENT                             | IO10              | 16                         |
-| WAKE                              | IO3               | 6                          |
-| RESET                             | EN                | 8                          |
+| ExpressLink Pin | ESP32-C3 GPIO Pin | ESP32-C3-MINI-1-N4-A Module Pin |
+|-----------------|-------------------|---------------------------------|
+| TX              | IO19              | 27                              |
+| RX              | IO18              | 26                              |
+| EVENT           | IO10              | 16                              |
+| WAKE            | IO3               | 6                               |
+| RESET           | EN                | 8                               |
 
 ## 3.1 DataSheet
 
-The Espressif AWS IoT ExpressLink board is based on the ESP32-C3-Mini-1.  
+Espressif's AWS IoT ExpressLink board is based on the ESP32-C3-MINI-1-N4-A.  
 The Datasheet can be found [here](https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf).
 
 ## 3.2 Standard Kit Contents
 
-- One unit of the Espressif AWS IoT ExpressLink board.
+- One unit of Espressif's AWS IoT ExpressLink board.
 
 ## 3.3 User Provided items
 
@@ -69,61 +69,61 @@ You may also need the following items:
 
 ## 3.5 Additional Hardware References
 
-Refer to the [ESP32-C3 Hardware Reference](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html#hardware-reference), for more information on the hardware.
+Refer to the [ESP32-C3 Hardware Reference](https://xespressif.com/projects/esp-idf/en/latest/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html#hardware-reference), for more information on the hardware.
 
 ## 3.6 Set up your hardware
 
 ## 3.6.1 With Arduino
 
-1. For using the Espressif AWS IoT ExpressLink Board with an Arduino board that can be used with shields, there is no additional setup required.
-2. You can directly plug the Espressif AWS IoT ExpressLink Board onto the Arduino board's headers.
-3. Once this is done, ensure that the Espressif AWS IoT ExpressLink Board's switch is in OFF state.
-4. You may now connect the Arduino to your computer, and that will automatically power the Board.
-5. You can use the Arduino sketch as shown in [Section 7](#7-using-espressif-aws-iot-expresslink-with-the-arduino-sketch) to quickly get started.  
+1. For using the ExpressLink board with an Arduino board that can be used with shields, there is no additional setup required.
+2. You can directly plug the ExpressLink board onto the Arduino board's headers.
+3. Once this is done, ensure that the ExpressLink board's switch is in OFF state.
+4. You may now connect the Arduino to your computer, and that will automatically power the board.
+5. You can use the Arduino sketch as shown in [Section 7](#7-using-espressifs-aws-iot-expresslink-with-the-arduino-sketch) to quickly get started.  
 
-The pins of the Espressif AWS IoT ExpressLink Board are mapped to the Arduino as follows:  
+The pins of the ExpressLink board are mapped to the Arduino as follows:  
 
-| Espressif AWS IoT ExpressLink Pin | Arduino Pin |
-|-----------------------------------|-------------|
-| RESET                             | 4           |
-| WAKE                              | 3           |
-| EVENT                             | 2           |
-| RX                                | 1           |
-| TX                                | 0           |
-| IOREF                             | IOREF       |
-| GND                               | GND         |
+| ExpressLink Pin | Arduino Pin |
+|-----------------|-------------|
+| RESET           | 4           |
+| WAKE            | 3           |
+| EVENT           | 2           |
+| RX              | 1           |
+| TX              | 0           |
+| IOREF           | IOREF       |
+| GND             | GND         |
 
 ## 3.6.2 With Raspberry Pi
 
-1. To connect an Espressif AWS IoT ExpressLink Board to the Raspberry Pi, you need to connect the TX, RX, EVENT, WAKE and RESET male pins of the J13 connector on the Espressif AWS IoT ExpressLink Board to the following GPIO pins of the Raspberry Pi (using female-to-female jumpers):
+1. To connect the ExpressLink board to the Raspberry Pi, you need to connect the TX, RX, EVENT, WAKE and RESET male pins of the J13 connector on the ExpressLink board to the following GPIO pins of the Raspberry Pi (using female-to-female jumpers):
 
-| Espressif AWS IoT ExpressLink Pin | Raspberry Pi GPIO |
-|-----------------------------------|-------------------|
-| RESET                             | GPIO 4            |
-| WAKE                              | GPIO 27           |
-| EVENT                             | GPIO 22           |
-| RX                                | GPIO 15           |
-| TX                                | GPIO 14           |
-| IOREF                             | 3V3 Power         |
-| GND                               | GND               |
+| ExpressLink Pin | Raspberry Pi GPIO |
+|-----------------|-------------------|
+| RESET           | GPIO 4            |
+| WAKE            | GPIO 27           |
+| EVENT           | GPIO 22           |
+| RX              | GPIO 15           |
+| TX              | GPIO 14           |
+| IOREF           | 3V3 Power         |
+| GND             | GND               |
 
-2. You can now access the Espressif AWS IoT ExpressLink on your Raspberry Pi, by using a desktop terminal application of your choice and using /dev/ttyS0 with the settings as shown in the table in Section 3.7
+2. You can now access ExpressLink on your Raspberry Pi, by using a desktop terminal application of your choice and using /dev/ttyS0 with the settings as shown in the table in Section 3.7
 
 ## 3.6.3 With any development host
 
-The Espressif AWS IoT ExpressLink board can be used with any development host, over a USB serial interface (using a USB-to-TTL converter) and using the simple AT commands for controlling Espressif AWS IoT ExpressLink.
+The ExpressLink board can be used with any development host, over a USB serial interface (using a USB-to-TTL converter) and using the simple AT commands for controlling ExpressLink.
 
-| Espressif AWS IoT ExpressLink Pin | USB-to-TTL converter |
-|-----------------------------------|----------------------|
-| RX                                | RX                   |
-| TX                                | TX                   |
-| GND                               | GND                  |
+| ExpressLink Pin | USB-to-TTL converter |
+|-----------------|----------------------|
+| RX              | RX                   |
+| TX              | TX                   |
+| GND             | GND                  |
 
 > Please note that, in this case, additional functionality like WAKE and EVENT cannot be utilised, but this can serve as a simple way for a quick evaluation and understanding behaviour of commands.
 
 ## 3.7 Set up host machine
 
-To establish a serial connection between your host machine and the Espressif AWS IoT ExpressLink, open a desktop terminal application for your host machine (e.g., TeraTerm for Windows, CoolTerm for Mac) and select the port corresponding to the evaluation kit. Configure the desktop terminal application as follows:  
+To establish a serial connection between your host machine and ExpressLink, open a desktop terminal application for your host machine (e.g., TeraTerm for Windows, CoolTerm for Mac) and select the port corresponding to the evaluation kit. Configure the desktop terminal application as follows:  
 
 | Config Option | Value               |
 |---------------|---------------------|
@@ -137,7 +137,7 @@ To establish a serial connection between your host machine and the Espressif AWS
 
 For a quick check, in the terminal window type: **AT** followed by **return**. If you receive the answer **OK** , Congratulations! You have successfully connected the evaluation kit to your host machine.
 
-> Please note that it is **NOT** possible to use the Espressif AWS IoT ExpressLink board using **ONLY** the connections shown in step 5a, i.e. it is **NOT** possible to give the AT commands using the console where you can see the Espressif AWS IoT ExpressLink bootup log. You will need to do additional steps as shown in 3.6.2 and 3.6.3 in case of Raspberry Pi and hosts other than Arduino. 
+> Please note that it is **NOT** possible to use the ExpressLink board using **ONLY** the connections shown in step 5a, i.e. it is **NOT** possible to give the AT commands using the console where you can see the ExpressLink bootup log. You will need to do additional steps as shown in 3.6.2 and 3.6.3 in case of Raspberry Pi and hosts other than Arduino. 
 
 Keep the terminal open, as it is needed for subsequent steps.
 
@@ -151,15 +151,15 @@ Refer to the instructions at [Set up your AWS Account](https://docs.aws.amazon.c
 
 Pay special attention to the Notes.
 
-# 5. Registering an Espressif AWS IoT ExpressLink to your development account
+# 5. Registering ExpressLink to your development account
 
-To create an IoT _Thing_ and add it to your account we will need to retrieve the Espressif AWS IoT ExpressLink module Thing Name and its corresponding certificate.  
+To create an IoT _Thing_ and add it to your account we will need to retrieve the ExpressLink module Thing Name and its corresponding certificate.  
 There are two methods to obtain the certificate, as shown in steps 5a and 5b:  
 
-## 5a. Directly connecting the Espressif AWS IoT ExpressLink board to your computer
+## 5a. Directly connecting the ExpressLink board to your computer
 
-1. Remove any other connections you have made to the board.
-2. Connect the Espressif AWS IoT ExpressLink board to the computer, using the microUSB port on the board, and a microUSB to USB cable.
+1. Remove any other connections you have made to the ExpressLink board.
+2. Connect the ExpressLink board to the computer, using the microUSB port on the board, and a microUSB to USB cable.
 3. Open the desktop terminal application on the host machine, and select the UART port of the board, and set baud rate to 115200.
 4. Press the Reset button on the board, and ensure that you can see the bootup log.
 5. The bootup log will clearly display the device certificate and the Thing Name towards the end.
@@ -197,13 +197,13 @@ Click **Save** to complete the Thing creation.
 
 ## 5.1 Set up for Wi-Fi
 
-The Espressif AWS IoT ExpressLink Board requires access to a local Wi-Fi router in order to connect to the Internet. You can enter the required security credentials in two ways, as shown in steps 5.1.1 and 5.1.2  
+The ExpressLink board requires access to a local Wi-Fi router in order to connect to the Internet. You can enter the required security credentials in two ways, as shown in steps 5.1.1 and 5.1.2  
 
-**Note** : When the Wi-Fi on the Espressif AWS IoT ExpressLink Board is not configured, the board will try to connect to the following SSID: **ESP-ExpressLink-Demo** and Passphrase: **ExpressLink@12345** by default.  
+**Note** : When the Wi-Fi on the ExpressLink board is not configured, the board will try to connect to the following SSID: **ESP-ExpressLink-Demo** and Passphrase: **ExpressLink@12345** by default.  
 
 ## 5.1.1 Using CONFMODE  
 
-1. The Espressif AWS IoT ExpressLink board can be easily configured with a mobile device, using Espressif's open source provisioning apps, available on the Google Play Store for Android, and the Apple App Store for iOS and iPadOS.  
+1. The ExpressLink board can be easily configured with a mobile device, using Espressif's open source provisioning apps, available on the Google Play Store for Android, and the Apple App Store for iOS and iPadOS.  
 
 [Google Play Store link](https://play.google.com/store/apps/details?id=com.espressif.provble)  
 [Apple App Store link](https://apps.apple.com/app/esp-ble-provisioning/id1473590141)
@@ -219,7 +219,7 @@ You will receive an "OK CONFMODE ENABLED" on the host.
 4. Then click on "I don't have a QR code".
 5. The app will now search for active BLE devices.
 6. When you see your device, click on its name.
-7. You will now see a list of the 2.4 Ghz Wi-Fi networks that the Espressif AWS IoT ExpressLink board can see.  
+7. You will now see a list of the 2.4 Ghz Wi-Fi networks that the ExpressLink board can see.  
 Select the Wi-Fi network that you would like to connect to, and enter the credentials.
 8. The credentials will be sent and saved to the device.
 
@@ -228,11 +228,11 @@ Select the Wi-Fi network that you would like to connect to, and enter the creden
 1. In the desktop terminal application type the command: **AT+CONF SSID=<_replace-with-your-router-ssid_>**
 2. In the desktop terminal application type the command: **AT+CONF Passphrase=<_replace-with-your-router-passphrase_>**
 
-**Note** : Your local router's SSID and passphrase are stored securely inside the Espressif AWS IoT ExpressLink module. While the SSID can be retrieved later (i.e., for debugging purposes) any attempt to retrieve the Passphrase will return an error.
+**Note** : Your local router's SSID and passphrase are stored securely inside the ExpressLink module. While the SSID can be retrieved later (i.e., for debugging purposes) any attempt to retrieve the Passphrase will return an error.
 
 ## 5.2 Completion
 
-Congratulations! You have completed the registration of the evaluation kit as a Thing in your IoT account. You will not need to repeat these steps the next time you connect, as the Espressif AWS IoT ExpressLink module will remember its configuration and will be ready to connect to your AWS account automatically.
+Congratulations! You have completed the registration of the evaluation kit as a Thing in your IoT account. You will not need to repeat these steps the next time you connect, as the ExpressLink module will remember its configuration and will be ready to connect to your AWS account automatically.
 
 # 6. Connecting and Interacting with AWS cloud
 
@@ -272,9 +272,9 @@ On your terminal, enter the command: **AT+GET1**
 
 You will receive the message **OK Hello from the AWS IoT console**
 
-# 7. Using Espressif AWS IoT ExpressLink with the Arduino Sketch
+# 7. Using ExpressLink with the Arduino Sketch
 
-We have provided a basic sketch in this repository (arduino_sample_sketch.ino) to get started quickly, with an Arduino.  
+We have provided a basic sketch in this repository [sketches/arduino_sample_sketch.ino](sketches/arduino_sample_sketch.ino) to get started quickly, with an Arduino.  
 The sketch will do the following:  
 - It will reset the board and wait till it is ready.
 - It will check if the board is already provisioned (i.e. if it has credentials to connect to a Wi-Fi network already) and it will set the hardcoded EndPoint.
@@ -286,22 +286,22 @@ Before you flash the provided sketch, change the hardcoded value of the EndPoint
 
 You can flash the sketch onto the Arduino board, using the steps shown [here](https://www.arduino.cc/en/main/howto).
 
-> Note that the sketch is just a starting point, and is not the only way to use the Espressif AWS IoT ExpressLink Board with an Arduino.  
+> Note that the sketch is just a starting point, and is not the only way to use the ExpressLink board with an Arduino.  
 
 ## 7.1 Debugging the Arduino sketch
 
-Arduino's standard RX and TX pins are used to communicate with Espressif AWS IoT ExpressLink board.  
+Arduino's standard RX and TX pins are used to communicate with the ExpressLink board.  
 Hence, standard USB interface of Arduino cannot be used for logging and debugging.  
 You can use any other UART of Arduino for debugging purpose, as described below:  
 
 1. In order to debug your Arduino sketch, you will need to use a USB-to-TTL converter (purchase link can be found in section 3.3)
-2. For logging anything from the sketch, you will need to connect pins of the Arduino (via the Espressif AWS IoT ExpressLink board) to the USB-to-TTL converter as shown in the table below:  
+2. For logging anything from the sketch, you will need to connect pins of the Arduino (via the ExpressLink board) to the USB-to-TTL converter as shown in the table below:  
 
-| Espressif AWS IoT ExpressLink Pin | USB-to-TTL converter Pin | Arduino Pin |
-|-----------------------------------|--------------------------|-------------|
-| RX                                | RX                       | 8           |
-| TX                                | TX                       | 9           |
-| GND                               | GND                      | GND         |
+| ExpressLink Pin | USB-to-TTL converter Pin | Arduino Pin |
+|-----------------|--------------------------|-------------|
+| RX              | RX                       | 8           |
+| TX              | TX                       | 9           |
+| GND             | GND                      | GND         |
 
 3. Use a desktop terminal application set at baudrate 115200 and the port of the USB-to-TTL converter to view the output.
 The code snippet below shows how to accomplish this in an Arduino sketch.
@@ -326,15 +326,15 @@ void loop()
 }
 ``` 
 
-# 8. Upgrading the Espressif AWS IoT ExpressLink firmware
+# 8. Upgrading ExpressLink firmware
 
-In order to upgrade the Espressif AWS IoT ExpressLink Board to the latest available firmware, you can follow any one of the approaches shown in Section 8.1.1 and 8.1.2
+In order to upgrade the ExpressLink board to the latest available firmware, you can follow any one of the approaches shown in Section 8.1.1 and 8.1.2
 
 ## 8.1 Carrying out an Over-The-Air (OTA) Upgrade
 
 ## 8.1.1 Prerequisites
 
-1. Download the latest release for Espressif AWS IoT ExpressLink from the releases section.  
+1. Download the latest release for ExpressLink from the releases section.  
 Ensure that it has the following contents:  
 a) A metadata file indicating the signature hashing algorithm used (Example: SHA-256), the signature encryption algorithm used (Example: ECDSA)  
 b) The signature file, encoded using the base64 encoding format.   
@@ -357,21 +357,21 @@ c) The firmware binary.
 
 ## 8.1.3 Monitoring and Applying new firmware update for ExpressLink
 
-You need to add the signature obtained previously, to the Espressif AWS IoT ExpressLink board so that the firmware can be verified.  
+You need to add the signature obtained previously, to the ExpressLink board so that the firmware can be verified.  
 Start by giving the command:  
 **AT+CONF OTACertificate=PEM**  
 The module will respond with "OK" and go into "Certificate writing" mode.  
 You can then paste the contents of the signature.crt file in your terminal.  
 You should see "OK COMPLETE" at the end.  
 
-- Express link module polls for firmware update jobs, receives and validates a job, and enters a state waiting for update to be accepted.
+- ExpressLink module polls for firmware update jobs, receives and validates a job, and enters a state waiting for update to be accepted.
 - Host application receives an OTA event indicating a new firmware image is available for ExpressLink.
 - Host application can query the state of the job using the command **AT+OTA?**
 - Host application can accept a new firmware update for by issuing command **AT+OTA ACCEPT**
 - ExpressLink should now start downloading the firmware update from cloud. Host can monitor the state of the job using **AT+OTA?**
 - On download completion and successful image signature validation, host receives an event to apply the new image.
 - Host application can apply the new image by issuing the command **AT+OTA APPLY**
-- Express Link now reboots and boots up with the new image. Host receives a **STARTUP** event indicating the new image is booted.
+- ExpressLink now reboots and boots up with the new image. Host receives a **STARTUP** event indicating the new image is booted.
 - Host application can connect back to the AWS IoT by issuing **AT+CONNECT**
 - ExpressLink should now connect to AWS IoT, complete the self-test and mark the image as valid preventing any further rollback to old image.
 - Going back to the AWS IoT console, job status should be marked as completed and succeeded.
@@ -381,7 +381,7 @@ You should see "OK COMPLETE" at the end.
 ## 8.2 Carrying out an Over-The-Wire (OTW) Upgrade
 
 To facilitate situations in which OTA upgrades are difficult to setup or completely not possible due to poor connectivity, we have provided the facility to carry out OTW upgrades.  
-The file `otw.py` needed for carrying out the OTW upgrade is available in this repository.  
+The file `otw.py` needed for carrying out the OTW upgrade is [available](tools/otw.py) in this repository in the `tools` directory.  
 
 1. Start by connecting the board to your computer, as shown in Section 3.6.3
 2. Ensure that you have a functional Python 3.X installation.
@@ -393,6 +393,6 @@ The file `otw.py` needed for carrying out the OTW upgrade is available in this r
 
 # 9. Troubleshooting
 
-1. If you are not able to establish connection over the UART using microUSB port on the Espressif AWS IoT ExpressLink board in step 5a, you will need to download the drivers for it and check the additional information for your operating system in the [Establish Serial Connection](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/get-started/establish-serial-connection.html) guide.
+1. If you are not able to establish connection over the UART using microUSB port on the ExpressLink board in step 5a, you will need to download the drivers for it and check the additional information for your operating system in the [Establish Serial Connection](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/get-started/establish-serial-connection.html) guide.
 
 2. For common AT command issues, please refer to AWS IoT ExpressLink FAQ page.
