@@ -69,7 +69,7 @@ You may also need the following items:
 
 ## 3.5 Additional Hardware References
 
-Refer to the [ESP32-C3 Hardware Reference](https://xespressif.com/projects/esp-idf/en/latest/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html#hardware-reference), for more information on the hardware.
+Refer to the [ESP32-C3 Hardware Reference](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html#hardware-reference), for more information on the hardware.
 
 ## 3.6 Set up your hardware
 
