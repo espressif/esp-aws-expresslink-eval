@@ -7,6 +7,10 @@ SoftwareSerial mySerial(8, 9); // RX, TX
 
 #define MY_AWS_IOT_ENDPOINT "<hash>-ats.iot.<region>.amazonaws.com"
 
+#define HOST_RESPONSE_BUFFER_SIZE 500
+
+char buffer[HOST_RESPONSE_BUFFER_SIZE];
+
 typedef enum event_t {
     EVENT_NONE = 0,
     EVENT_STARTUP = 2,
@@ -16,7 +20,6 @@ typedef enum event_t {
     EVENT_SHADOW,
     EVENT_CONFMODE,
 } event_t;
-
 
 typedef enum {
     STATE_INIT = 0,
@@ -30,12 +33,19 @@ typedef enum {
 
 static state_t state;
 static unsigned long got_connected;
+static unsigned long saved_timeout_value_ms;
 
-String execute_command(String command)
+String execute_command(String command, unsigned long timeout_ms)
 {
-    Serial.print(command);
-    String response = Serial.readString();
-    return response;
+    saved_timeout_value_ms = Serial.getTimeout();
+    Serial.setTimeout(timeout_ms);
+    memset(buffer, 0, HOST_RESPONSE_BUFFER_SIZE);
+    Serial.println(command);
+    Serial.readBytesUntil('\n', buffer, HOST_RESPONSE_BUFFER_SIZE);
+    String s(buffer);
+    s.trim();
+    Serial.setTimeout(saved_timeout_value_ms);
+    return s;
 }
 
 void expresslink_reset()
@@ -53,8 +63,8 @@ event_t process_event()
     val = digitalRead(EVENT_PIN);
     if(val)
     {
-        response = execute_command("AT+EVENT?\n");
-        if (response.equals("OK\n"))
+        response = execute_command("AT+EVENT?", 3000);
+        if (response.equals("OK"))
         {
             return EVENT_NONE;
         }
@@ -65,7 +75,6 @@ event_t process_event()
 
             total_read = sscanf(response.c_str(), "%s %d %d %*s" , ok_string, &event_number, &topic_index);
 
-                        
             return event_number;
         }
     }
@@ -83,8 +92,9 @@ state_t process_ssid(String response)
     if(total_read > 1) {
         return STATE_PROVISIONED;
     }
-    else
+    else {
         return STATE_UNPROVISIONED;
+    }
 }
 
 void setup()
@@ -101,6 +111,7 @@ void setup()
         ;
     }
     got_connected = 0;
+    saved_timeout_value_ms = 0;
 }
 
 void loop()
@@ -127,16 +138,16 @@ void loop()
         break;
 
         case STATE_EL_READY:
-        response = execute_command("AT+CONF EndPoint="MY_AWS_IOT_ENDPOINT"\n");
-        response = execute_command("AT+CONF Topic1=TEST\n");
-        response = execute_command("AT+CONF? SSID\n");
+        response = execute_command("AT+CONF Endpoint="MY_AWS_IOT_ENDPOINT"", 3000);
+        response = execute_command("AT+CONF Topic1=TEST", 3000);
+        response = execute_command("AT+CONF? SSID", 3000);
         state = process_ssid(response);
 
         break;
 
         case STATE_UNPROVISIONED:
-        response = execute_command("AT+CONFMODE\n");
-        if (response.equals("OK CONFMODE ENABLED\n"))
+        response = execute_command("AT+CONFMODE", 5000);
+        if (response.equals("OK CONFMODE ENABLED"))
         {
             state = STATE_PROVISIONING;
         }
@@ -149,10 +160,11 @@ void loop()
         break;
 
         case STATE_PROVISIONED:
-        response = execute_command("AT+CONNECT\n");
-        if (response.equals("OK CONNECTED\n")) {
+        response = execute_command("AT+CONNECT", 30000);
+        if (response.equals("OK 1 CONNECTED")) {
             state = STATE_CONNECTED;
         }
+        break;
 
         case STATE_CONNECTED:
         if (event == EVENT_CONLOST)
@@ -161,7 +173,7 @@ void loop()
         }
         if (millis() - got_connected >= 10000)
         {
-            response = execute_command("AT+SEND1 Hello World\n");
+            response = execute_command("AT+SEND1 Hello World", 5000);
             got_connected = millis();
         }
         break;
