@@ -1,5 +1,7 @@
 # Getting Started Guide for Espressif's AWS IoT ExpressLink Evaluation Kit
 
+> **IMPORTANT**: ExpressLink firmware releases can only be flashed on ExpressLink modules and DevKits.
+
 # Table of Contents
 
 1. [Document Information](#1-document-information)
