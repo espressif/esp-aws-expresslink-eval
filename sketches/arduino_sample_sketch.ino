@@ -1,15 +1,12 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial mySerial(8, 9); // RX, TX
+#define SERIAL_RX_PIN   8
+#define SERIAL_TX_PIN   9
 
 #define EVENT_PIN 2
 #define RESET_PIN 4
 
 #define MY_AWS_IOT_ENDPOINT "<hash>-ats.iot.<region>.amazonaws.com"
-
-#define HOST_RESPONSE_BUFFER_SIZE 500
-
-char buffer[HOST_RESPONSE_BUFFER_SIZE];
 
 typedef enum event_t {
     EVENT_NONE = 0,
@@ -31,18 +28,12 @@ typedef enum {
     STATE_CONNECTED,
 } state_t;
 
-static state_t state;
-static unsigned long got_connected;
-static unsigned long saved_timeout_value_ms;
-
 String execute_command(String command, unsigned long timeout_ms)
 {
-    saved_timeout_value_ms = Serial.getTimeout();
+    unsigned long saved_timeout_value_ms = Serial.getTimeout();
     Serial.setTimeout(timeout_ms);
-    memset(buffer, 0, HOST_RESPONSE_BUFFER_SIZE);
     Serial.println(command);
-    Serial.readBytesUntil('\n', buffer, HOST_RESPONSE_BUFFER_SIZE);
-    String s(buffer);
+    String s = Serial.readStringUntil('\n');
     s.trim();
     Serial.setTimeout(saved_timeout_value_ms);
     return s;
@@ -99,7 +90,7 @@ state_t process_ssid(String response)
 
 void setup()
 {
-    state = STATE_INIT;
+    SoftwareSerial mySerial(SERIAL_RX_PIN, SERIAL_TX_PIN);
     Serial.begin(115200);
     mySerial.begin(115200);
     pinMode(EVENT_PIN, INPUT);
@@ -110,14 +101,13 @@ void setup()
     while (!mySerial) {
         ;
     }
-    got_connected = 0;
-    saved_timeout_value_ms = 0;
 }
 
 void loop()
 {
     event_t event = EVENT_NONE;
     String response;
+    static state_t state = STATE_INIT;
 
     if (state != STATE_INIT)
     {
@@ -170,11 +160,13 @@ void loop()
         if (event == EVENT_CONLOST)
         {
             state = STATE_PROVISIONED;
+            break;
         }
-        if (millis() - got_connected >= 10000)
+        static unsigned long last_send_time;
+        if (millis() - last_send_time >= 10000)
         {
             response = execute_command("AT+SEND1 Hello World", 5000);
-            got_connected = millis();
+            last_send_time = millis();
         }
         break;
     }
