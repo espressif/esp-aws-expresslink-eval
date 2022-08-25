@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial mySerial(8, 9); // RX, TX
+#define SERIAL_RX_PIN   8
+#define SERIAL_TX_PIN   9
 
 #define EVENT_PIN 2
 #define RESET_PIN 4
@@ -17,7 +18,6 @@ typedef enum event_t {
     EVENT_CONFMODE,
 } event_t;
 
-
 typedef enum {
     STATE_INIT = 0,
     STATE_WAIT_EL_READY,
@@ -28,14 +28,15 @@ typedef enum {
     STATE_CONNECTED,
 } state_t;
 
-static state_t state;
-static unsigned long got_connected;
-
-String execute_command(String command)
+String execute_command(String command, unsigned long timeout_ms)
 {
-    Serial.print(command);
-    String response = Serial.readString();
-    return response;
+    unsigned long saved_timeout_value_ms = Serial.getTimeout();
+    Serial.setTimeout(timeout_ms);
+    Serial.println(command);
+    String s = Serial.readStringUntil('\n');
+    s.trim();
+    Serial.setTimeout(saved_timeout_value_ms);
+    return s;
 }
 
 void expresslink_reset()
@@ -53,8 +54,8 @@ event_t process_event()
     val = digitalRead(EVENT_PIN);
     if(val)
     {
-        response = execute_command("AT+EVENT?\n");
-        if (response.equals("OK\n"))
+        response = execute_command("AT+EVENT?", 3000);
+        if (response.equals("OK"))
         {
             return EVENT_NONE;
         }
@@ -65,7 +66,6 @@ event_t process_event()
 
             total_read = sscanf(response.c_str(), "%s %d %d %*s" , ok_string, &event_number, &topic_index);
 
-                        
             return event_number;
         }
     }
@@ -83,13 +83,14 @@ state_t process_ssid(String response)
     if(total_read > 1) {
         return STATE_PROVISIONED;
     }
-    else
+    else {
         return STATE_UNPROVISIONED;
+    }
 }
 
 void setup()
 {
-    state = STATE_INIT;
+    SoftwareSerial mySerial(SERIAL_RX_PIN, SERIAL_TX_PIN);
     Serial.begin(115200);
     mySerial.begin(115200);
     pinMode(EVENT_PIN, INPUT);
@@ -100,13 +101,13 @@ void setup()
     while (!mySerial) {
         ;
     }
-    got_connected = 0;
 }
 
 void loop()
 {
     event_t event = EVENT_NONE;
     String response;
+    static state_t state = STATE_INIT;
 
     if (state != STATE_INIT)
     {
@@ -127,16 +128,16 @@ void loop()
         break;
 
         case STATE_EL_READY:
-        response = execute_command("AT+CONF EndPoint="MY_AWS_IOT_ENDPOINT"\n");
-        response = execute_command("AT+CONF Topic1=TEST\n");
-        response = execute_command("AT+CONF? SSID\n");
+        response = execute_command("AT+CONF Endpoint="MY_AWS_IOT_ENDPOINT"", 3000);
+        response = execute_command("AT+CONF Topic1=TEST", 3000);
+        response = execute_command("AT+CONF? SSID", 3000);
         state = process_ssid(response);
 
         break;
 
         case STATE_UNPROVISIONED:
-        response = execute_command("AT+CONFMODE\n");
-        if (response.equals("OK CONFMODE ENABLED\n"))
+        response = execute_command("AT+CONFMODE", 5000);
+        if (response.equals("OK CONFMODE ENABLED"))
         {
             state = STATE_PROVISIONING;
         }
@@ -149,20 +150,23 @@ void loop()
         break;
 
         case STATE_PROVISIONED:
-        response = execute_command("AT+CONNECT\n");
-        if (response.equals("OK CONNECTED\n")) {
+        response = execute_command("AT+CONNECT", 30000);
+        if (response.equals("OK 1 CONNECTED")) {
             state = STATE_CONNECTED;
         }
+        break;
 
         case STATE_CONNECTED:
         if (event == EVENT_CONLOST)
         {
             state = STATE_PROVISIONED;
+            break;
         }
-        if (millis() - got_connected >= 10000)
+        static unsigned long last_send_time;
+        if (millis() - last_send_time >= 10000)
         {
-            response = execute_command("AT+SEND1 Hello World\n");
-            got_connected = millis();
+            response = execute_command("AT+SEND1 Hello World", 5000);
+            last_send_time = millis();
         }
         break;
     }
