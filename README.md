@@ -125,8 +125,8 @@ The ExpressLink board can be used with any development host, over a USB serial i
 
 | ExpressLink Pin | USB-to-TTL converter |
 |-----------------|----------------------|
-| RX              | RX                   |
-| TX              | TX                   |
+| RX              | TX                   |
+| TX              | RX                   |
 | GND             | GND                  |
 
 > Please note that, in this case, additional functionality like WAKE and EVENT cannot be utilised, but this can serve as a simple way for a quick evaluation and understanding behaviour of commands.
@@ -419,7 +419,7 @@ In order to upgrade the ExpressLink board to the latest available firmware, you 
 
 You need to add the signature obtained previously, to the ExpressLink board so that the firmware can be verified.  
 Start by giving the command:  
-**AT+CONF OTACertificate=PEM**  
+**AT+CONF OTACertificate=pem**
 The module will respond with "OK" and go into "Certificate writing" mode.  
 You can then paste the contents of the ecdsasigner.crt file in your terminal.  
 You should see "OK COMPLETE" at the end.  
